@@ -29,6 +29,8 @@
     | `c5d.large` | Compression: 7623 MIPS<br />Decompression: 5081 MIPS | 13908.73 MB/s (Copy Int) |
 
     > Region: US East (N. Virginia). Use `Ubuntu Server 22.04 LTS (HVM)` as AMI.
+    
+    > Ans: The performance of EC2 instances does not always scale linearly with vCPUs and memory. For example, `t2.medium` outperforms `c5d.large` despite having the same resources, highlighting that performance depends on instance family and optimizations, not just resource quantity.
 
 ## Question 2: Measure the EC2 Network performance
 
@@ -37,20 +39,25 @@
     | Type                      | TCP b/w (Mbps) | RTT (ms) |
     | ------------------------- | -------------- | -------- |
     | `t3.medium` - `t3.medium` | 3720           | 0.282    |
-    | `m5.large` - `m5.large`   | 4930           | 0.293    |
-    | `c5n.large` - `c5n.large` | 4980           | 0.171    |
+    | `m5.large` - `m5.large`   | 4930           | 0.166    |
+    | `c5n.large` - `c5n.large` | 4980           | 0.151    |
     | `t3.medium` - `c5n.large` | 2370           | 0.647    |
-    | `m5.large` - `c5n.large`  | 2590           | 0.622    |
-    | `m5.large` - `t3.medium`  | 4470           | 0.253    |
+    | `m5.large` - `c5n.large`  | 4960           | 0.145    |
+    | `m5.large` - `t3.medium`  | 2780           | 0.573    |
 
     > Region: US East (N. Virginia). Use `Ubuntu Server 22.04 LTS (HVM)` as AMI. Note: Use private IP address when using iPerf within the same region. You'll need iPerf for measuring TCP bandwidth and Ping for measuring Round-Trip time.
+
+    > Ans: Within the same region, instances of the **same type** (e.g., `t3.medium` - `t3.medium`, `m5.large` - `m5.large`, `c5n.large` - `c5n.large`) experience **higher TCP bandwidth** and **lower RTT** compared to instances of **different types** (e.g., `t3.medium` - `c5n.large`, `m5.large` - `t3.medium`). 
 
 2. (1 mark) What about the network performance for instances deployed in different regions? In order to answer this question, you need to complete the following table.
 
     | Connection                | TCP b/w (Mbps) | RTT (ms) |
     | ------------------------- | -------------- | -------- |
     | N. Virginia - Oregon      | 31.8           | 62.881   |
-    | N. Virginia - N. Virginia | 4450           | 0.269    |
-    | Oregon - Oregon           | 4740           | 0.133    |
+    | N. Virginia - N. Virginia | 4790           | 0.143    |
+    | Oregon - Oregon           | 4730           | 0.205    |
 
     > Region: US East (N. Virginia), US West (Oregon). Use `Ubuntu Server 22.04 LTS (HVM)` as AMI. All instances are `c5.large`. Note: Use public IP address when using iPerf within the same region.
+    
+    > Ans: Instances deployed in different regions (e.g., N. Virginia - Oregon) exhibit **lower TCP bandwidth** and **higher round-trip time (RTT)** compared to instances deployed within the same region (e.g., N. Virginia - N. Virginia or Oregon - Oregon). 
+
